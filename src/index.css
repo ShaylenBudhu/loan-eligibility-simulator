@@ -6,6 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --color-capitec-blue: #00486D;
     --font-heading: var(--font-sans);
     --font-sans: 'Geist Variable', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
@@ -90,7 +91,7 @@
 }
 
 .dark {
-    --background: oklch(0.16 0.02 263);
+    --background: #00486D;
     --foreground: oklch(0.97 0 0);
     --card: oklch(0.21 0.03 263);
     --card-foreground: oklch(0.97 0 0);
