@@ -1,5 +1,9 @@
 import type { FC } from "react";
 
-export const ContactPage: FC = () => {
-  return <></>;
-};
+import { PageTheme } from "@/components/templates";
+
+export const ContactPage: FC = () => (
+  <PageTheme className="mx-auto max-w-7xl px-6 py-16">
+    <h1 className="text-3xl font-bold text-white">Contact Us</h1>
+  </PageTheme>
+);
