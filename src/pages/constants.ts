@@ -1,8 +1,13 @@
 import {
   Zap,
   Lock,
+  Mail,
+  Users,
+  Award,
   Clock,
+  Phone,
   Shield,
+  MapPin,
   BarChart3,
   Calculator,
   TrendingUp,
@@ -86,4 +91,72 @@ export const HOW_IT_WORKS_STEPS: {
     description:
       "Receive a clear eligibility verdict, maximum loan amount, and a full breakdown of your finances.",
   },
+];
+
+export const CONTACT_DETAILS = [
+  {
+    Icon: Phone,
+    label: "Call us",
+    value: "0860 10 20 43",
+    sub: "Mon – Fri, 8am – 5pm",
+  },
+  {
+    Icon: Mail,
+    label: "Email us",
+    value: "support@capitecbank.co.za",
+    sub: "We reply within 24 hours",
+  },
+  {
+    Icon: MapPin,
+    label: "Head office",
+    value: "1 Quantum Street, Technopark",
+    sub: "Stellenbosch, 7600",
+  },
+  {
+    Icon: Clock,
+    label: "Branch hours",
+    value: "Mon – Fri: 8am – 5pm",
+    sub: "Sat: 8am – 1pm",
+  },
+];
+
+export const ABOUT_US_STATS = [
+  { value: "1996", label: "Founded" },
+  { value: "18M+", label: "Clients served" },
+  { value: "850+", label: "Branches nationwide" },
+  { value: "A+", label: "Credit rating" },
+];
+
+export const ABOUT_US_VALUES = [
+  {
+    Icon: Shield,
+    title: "Trusted & Secure",
+    description:
+      "We apply bank-grade security to every interaction, keeping your financial data safe at all times.",
+  },
+  {
+    Icon: Users,
+    title: "Client-First",
+    description:
+      "Every product we build starts with a simple question: does this make our clients' lives simpler?",
+  },
+  {
+    Icon: TrendingUp,
+    title: "Financial Empowerment",
+    description:
+      "We believe everyone deserves clarity about their finances — no jargon, no hidden terms.",
+  },
+  {
+    Icon: Award,
+    title: "Proven Track Record",
+    description:
+      "Award-winning banking services backed by decades of innovation in the South African market.",
+  },
+];
+
+export const OUR_PROMISES = [
+  "No hidden fees",
+  "Plain-language terms",
+  "Instant decisions",
+  "Human support, always",
 ];

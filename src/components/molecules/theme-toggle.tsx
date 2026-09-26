@@ -12,7 +12,7 @@ export const ThemeToggle = () => {
       size="icon"
       onClick={toggle}
       aria-label="Toggle theme"
-      className="rounded-full text-neutral-300 hover:bg-white/10 hover:text-white dark:text-gray-600 dark:hover:bg-gray-100 dark:hover:text-gray-900"
+      className="cursor-pointer rounded-full text-white/70 hover:bg-white/10 hover:text-white dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white"
     >
       {theme === "dark" ? (
         <Sun className="size-4" />

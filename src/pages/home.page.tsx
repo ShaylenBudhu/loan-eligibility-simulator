@@ -170,54 +170,58 @@ export const HomePage: FC = () => (
       </div>
     </section>
 
-    <section className="border-y border-white/10 bg-white/5 backdrop-blur-sm">
+    <section className="border-y border-gray-200 bg-white dark:border-white/10 dark:bg-white/5 dark:backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="grid grid-cols-3 divide-x divide-white/10">
+        <div className="grid grid-cols-3 divide-x divide-gray-200 dark:divide-white/10">
           {STATS.map(({ value, label, Icon }) => (
             <div
               key={label}
               className="flex flex-col items-center gap-1 px-8 text-center"
             >
-              <Icon className="mb-1 size-5 text-blue-300" />
-              <span className="text-2xl font-bold text-white">{value}</span>
-              <span className="text-sm text-white/50">{label}</span>
+              <Icon className="mb-1 size-5 text-capitec-blue dark:text-blue-300" />
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                {value}
+              </span>
+              <span className="text-sm text-gray-500 dark:text-white/50">
+                {label}
+              </span>
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    <section className="bg-white py-20 dark:bg-transparent">
+    <section className="bg-capitec-blue py-20 dark:bg-transparent">
       <div className="mx-auto max-w-7xl space-y-12 px-6">
         <div className="space-y-3 text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-capitec-blue dark:text-blue-300">
+          <p className="text-sm font-semibold uppercase tracking-widest text-blue-200 dark:text-blue-300">
             Our Tools
           </p>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-3xl font-bold text-white">
             Everything you need to plan your loan
           </h2>
-          <p className="mx-auto max-w-xl text-gray-500 dark:text-white/60">
+          <p className="mx-auto max-w-xl text-white/70 dark:text-white/60">
             Capitec's suite of financial planning tools helps you make
             confident, informed decisions before you commit.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="relative flex flex-col overflow-hidden rounded-3xl bg-gray-100 p-8 text-gray-900 dark:bg-white/10 dark:text-white">
-            <div className="pointer-events-none absolute -bottom-8 -right-8 size-40 rounded-full bg-black/5 dark:bg-white/5" />
+          <div className="relative flex flex-col overflow-hidden rounded-3xl border border-white/25 bg-white/15 p-8 text-white backdrop-blur-sm shadow-2xl dark:bg-white/10">
+            <div className="pointer-events-none absolute -bottom-8 -right-8 size-40 rounded-full bg-white/5" />
 
             <div className="relative z-10 flex-1 space-y-4">
-              <div className="flex size-12 items-center justify-center rounded-2xl bg-capitec-blue/10 dark:bg-white/20">
-                <Calculator className="size-6 text-capitec-blue dark:text-white" />
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-white/20">
+                <Calculator className="size-6 text-white" />
               </div>
               <div className="space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-white/50">
+                <span className="text-xs font-semibold uppercase tracking-widest text-white/50">
                   Featured Tool
                 </span>
                 <h3 className="text-xl font-bold">
                   Loan Eligibility Simulator
                 </h3>
-                <p className="text-sm leading-relaxed text-gray-500 dark:text-white/70">
+                <p className="text-sm leading-relaxed text-white/70">
                   Enter your income, expenses, and desired loan amount to get an
                   instant eligibility assessment with a detailed affordability
                   breakdown.
@@ -230,7 +234,7 @@ export const HomePage: FC = () => (
                 to="/loan-simulator"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "w-full bg-capitec-blue font-semibold text-white hover:bg-capitec-blue/90 dark:bg-white dark:text-capitec-blue dark:hover:bg-white/90",
+                  "w-full bg-white font-semibold text-capitec-blue hover:bg-white/90",
                 )}
               >
                 Get Started
@@ -243,20 +247,18 @@ export const HomePage: FC = () => (
             {TOOL_CARDS.map(({ Icon, title, description }) => (
               <div
                 key={title}
-                className="group space-y-3 rounded-2xl border border-gray-200 bg-gray-50 p-6 transition-all hover:border-capitec-blue/30 hover:shadow-md dark:border-white/10 dark:bg-white/5 dark:hover:border-white/25 dark:hover:bg-white/10"
+                className="group space-y-3 rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur-sm shadow-2xl transition-all hover:border-white/30 hover:bg-white/15 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/25 dark:hover:bg-white/10"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex size-10 items-center justify-center rounded-xl bg-capitec-blue/10 transition-colors group-hover:bg-capitec-blue/20 dark:bg-white/10 dark:group-hover:bg-white/20">
-                    <Icon className="size-5 text-capitec-blue dark:text-blue-300" />
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-white/15 transition-colors group-hover:bg-white/25">
+                    <Icon className="size-5 text-white" />
                   </div>
-                  <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-600 dark:bg-green-400/15 dark:text-green-300">
+                  <span className="rounded-full border border-green-400/30 bg-green-400/20 px-2 py-0.5 text-xs font-medium text-green-200 dark:text-green-300">
                     Included
                   </span>
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                  {title}
-                </h3>
-                <p className="text-xs leading-relaxed text-gray-500 dark:text-white/50">
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-xs leading-relaxed text-white/60">
                   {description}
                 </p>
               </div>
@@ -268,7 +270,7 @@ export const HomePage: FC = () => (
 
     <section
       id="how-it-works"
-      className="bg-gray-50 py-20 dark:bg-transparent dark:border-t dark:border-white/10"
+      className="bg-white py-20 dark:bg-transparent dark:border-t dark:border-white/10"
     >
       <div className="mx-auto max-w-7xl space-y-12 px-6">
         <div className="space-y-3 text-center">
@@ -330,7 +332,7 @@ export const HomePage: FC = () => (
       </div>
     </section>
 
-    <section className="border-t border-white/10 bg-white/5 py-16 backdrop-blur-sm">
+    <section className="bg-capitec-blue py-16 dark:border-t dark:border-white/10 dark:bg-white/5 dark:backdrop-blur-sm">
       <div className="mx-auto max-w-3xl space-y-6 px-6 text-center">
         <h2 className="text-3xl font-bold text-white">
           Ready to find out if you qualify?
