@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type FC } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState, type FC } from "react";
 
 import type { Theme, ThemeContextValue, ThemeProviderProps } from "./types";
 
@@ -14,8 +14,11 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
       : "light";
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
+
+  useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
