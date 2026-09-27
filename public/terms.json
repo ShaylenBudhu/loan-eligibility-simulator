@@ -1,0 +1,40 @@
+{
+  "repaymentTerms": [
+    {
+      "value": 12,
+      "label": "12 months (1 year)",
+      "description": "Higher payment, less interest"
+    },
+    {
+      "value": 24,
+      "label": "24 months (2 years)",
+      "description": "Moderate payment & interest"
+    },
+    {
+      "value": 36,
+      "label": "36 months (3 years)",
+      "description": "Moderate payment & interest"
+    },
+    {
+      "value": 48,
+      "label": "48 months (4 years)",
+      "description": "Lower payment, more interest"
+    },
+    {
+      "value": 60,
+      "label": "60 months (5 years)",
+      "description": "Even lower payment, more interest",
+      "isDefault": true
+    },
+    {
+      "value": 72,
+      "label": "72 months (6 years)",
+      "description": "Lower payment, higher interest"
+    },
+    {
+      "value": 84,
+      "label": "84 months (7 years)",
+      "description": "Lowest payment, highest interest"
+    }
+  ]
+}

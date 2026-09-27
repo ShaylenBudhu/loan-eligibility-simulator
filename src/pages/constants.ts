@@ -160,3 +160,26 @@ export const OUR_PROMISES = [
   "Instant decisions",
   "Human support, always",
 ];
+
+export const WHAT_YOU_GET = [
+  {
+    Icon: CheckCircle2,
+    title: "Eligibility verdict",
+    desc: "A clear yes/no with the reasoning behind it.",
+  },
+  {
+    Icon: TrendingUp,
+    title: "Max loan amount",
+    desc: "The highest amount you qualify for at current rates.",
+  },
+  {
+    Icon: BarChart3,
+    title: "Affordability breakdown",
+    desc: "Debt-to-income ratio, monthly repayment, and disposable income.",
+  },
+  {
+    Icon: Shield,
+    title: "Risk tier assessment",
+    desc: "Colour-coded risk rating aligned to NCA guidelines.",
+  },
+];
