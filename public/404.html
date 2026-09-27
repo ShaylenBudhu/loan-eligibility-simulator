@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Redirect all GitHub Pages 404s back to index.html, preserving the path
+      var base = '/loan-eligibility-simulator';
+      var path = window.location.pathname.replace(base, '') || '/';
+      var search = window.location.search;
+      var hash = window.location.hash;
+      var redirectUrl = base + '/?p=' + encodeURIComponent(path + search) + hash;
+      window.location.replace(redirectUrl);
+    </script>
+  </head>
+</html>
