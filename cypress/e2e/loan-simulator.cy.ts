@@ -132,7 +132,7 @@ describe("Loan Simulator", () => {
     cy.contains("36 months").click();
     cy.contains("button", "Check Eligibility").click();
 
-    cy.contains("Monthly Income Allocation").should("be.visible");
+    cy.contains("Net Income Allocation").should("be.visible");
     cy.contains("Loan Balance Over Time").should("be.visible");
   });
 });
