@@ -4,7 +4,6 @@
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
     "moduleResolution": "bundler",
-    "jsx": "react-jsx",
     "types": ["cypress", "vite/client"],
     "skipLibCheck": true,
     "baseUrl": ".",
@@ -13,5 +12,5 @@
       "@/*": ["../src/*"]
     }
   },
-  "include": ["./**/*.cy.ts", "./**/*.cy.tsx", "./support/**/*.ts"]
+  "include": ["./**/*.cy.ts", "./support/**/*.ts"]
 }

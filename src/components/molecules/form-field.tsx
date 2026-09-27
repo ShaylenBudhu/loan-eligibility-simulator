@@ -1,24 +1,31 @@
-import { type ReactNode } from "react";
+import {
+  Field,
+  Input,
+  FieldError,
+  FieldLabel,
+  FieldDescription,
+} from "@/components/atoms";
 
-import { Label } from "@/components/atoms";
+import type { FormFieldProps } from "./types";
 
-interface FormFieldProps {
-  id: string;
-  label: string;
-  error?: string;
-  children: ReactNode;
-}
+export const FormField = ({
+  id,
+  label,
+  error,
+  children,
+  description,
+  ...inputProps
+}: FormFieldProps & { children?: React.ReactNode }) => {
+  const fieldId = id ?? label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-const FormField = ({ id, label, error, children }: FormFieldProps) => (
-  <div className="space-y-1.5">
-    <Label htmlFor={id}>{label}</Label>
-    {children}
-    {error && (
-      <p role="alert" className="text-xs text-red-500 dark:text-red-400">
-        {error}
-      </p>
-    )}
-  </div>
-);
-
-export { FormField };
+  return (
+    <Field data-invalid={!!error || undefined}>
+      <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>
+      {children ?? (
+        <Input id={fieldId} aria-invalid={!!error} {...inputProps} />
+      )}
+      {description && <FieldDescription>({description})</FieldDescription>}
+      <FieldError>{error}</FieldError>
+    </Field>
+  );
+};
