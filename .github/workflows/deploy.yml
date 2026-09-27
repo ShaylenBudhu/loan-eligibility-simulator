@@ -30,7 +30,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --config.onlyBuiltDependencies[]=core-js --config.onlyBuiltDependencies[]=cypress
 
       - name: Build
         run: pnpm build
