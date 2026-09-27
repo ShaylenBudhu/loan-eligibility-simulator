@@ -248,18 +248,21 @@ npx @biomejs/biome init
 
 ---
 
-## ADR-007: UI Component Library — shadcn/ui
+## ADR-007: UI Component Library — shadcn/ui + Base UI
 
-**Decision:** Use shadcn/ui for UI components.
+**Decision:** Use shadcn/ui as the primary component library, with `@base-ui/react` for lower-level headless primitives.
 
 **Reasoning:**
 - Components are copied into the project — full ownership and customisability
-- Built on Radix UI primitives (accessible by default)
+- shadcn/ui is built on Radix UI primitives (accessible by default)
 - Theming via CSS variables makes dark mode straightforward
 - Pairs with Tailwind CSS which is configured automatically on init
 - Production-quality look with minimal effort
 
 **Key distinction:** shadcn is not a traditional npm package — it scaffolds component source code directly into `components/ui/`. You own and can modify each component.
+
+**Base UI (`@base-ui/react`):**
+Base UI (maintained by the MUI team) provides unstyled, accessible headless components. It complements shadcn by offering primitives that shadcn does not yet cover, without bringing in a full design system.
 
 **Setup commands:**
 ```bash
@@ -280,19 +283,208 @@ npx shadcn@latest add button    # add components individually as needed
 
 ---
 
-## ADR-009: Deployment — TBD
+## ADR-009: Testing Strategy — Vitest (unit) + Cypress (E2E)
 
-**Decision:** Not yet finalised. Options evaluated:
+**Decision:** Use a two-layer testing strategy: Vitest + Testing Library for unit/integration tests, and Cypress for end-to-end tests.
+
+**What a testing framework does:**
+Automated tests verify that your application behaves correctly — catching regressions when code changes without requiring manual re-testing of every feature.
+
+**Testing layers:**
+
+### Layer 1 — Unit & Integration Testing: Vitest + Testing Library ✅ Used
+Vitest runs in Node with jsdom, making it fast and well-suited for:
+- Pure logic functions (loan calculators, formatters, validators)
+- React components in isolation via `@testing-library/react`
+- Coverage reporting via `@vitest/coverage-v8`
+
+Tests live in `src/__tests__/` and cover components, utilities, and business logic. Current test files include: `button`, `contact-form`, `download-results`, `expense-breakdown-dialog`, `loan-calculator`, `loan-simulator-form`, `loan-tiers-limits`, `nav-bar`, `page-theme`, `results-panel`, `theme-toggle`.
+
+**Commands:**
+```bash
+pnpm test             # run once
+pnpm test:watch       # watch mode
+pnpm test:coverage    # with coverage report
+pnpm test:ui          # Vitest UI
+```
+
+### Layer 2 — End-to-End Testing: Cypress ✅ Used
+Tests the full application as a user would interact with it — navigating pages, filling forms, and asserting on UI state in a real browser.
+
+- Runs against the full app in Chrome
+- Interactive Test Runner with time-travel debugging
+- Network interception for API mocking
+
+**Commands:**
+```bash
+pnpm cy:open    # interactive mode
+pnpm cy:run     # headless CI mode
+pnpm cy:e2e     # E2E suite only
+```
+
+**Why both tools:**
+
+| | Vitest + RTL | Cypress |
+|---|---|---|
+| Speed | Very fast (Node/jsdom) | Slower (real browser) |
+| Unit/logic testing | Excellent | Not ideal |
+| E2E / full flows | No | Yes |
+| Coverage reports | Yes | Limited |
+| Real browser | No (jsdom) | Yes |
+
+Using both tools gives the best of each: fast feedback on logic and components from Vitest, with full-flow confidence from Cypress E2E tests.
+
+---
+
+## ADR-010: Deployment — Docker + Nginx
+
+**Decision:** Deploy as a Docker container using a multi-stage build, served by Nginx.
+
+**How it works:**
+
+```
+Stage 1 — builder (node:22-alpine)
+  └── pnpm install --frozen-lockfile
+  └── pnpm build  →  /app/dist/
+
+Stage 2 — runner (nginx:alpine)
+  └── copies /app/dist → /usr/share/nginx/html
+  └── custom nginx.conf
+  └── EXPOSE 80
+```
+
+**Reasoning:**
+- The build output is static files — Nginx serves them efficiently with no Node runtime needed at serve time
+- Multi-stage build keeps the final image small (only Nginx + static assets, not Node modules)
+- Docker makes the deployment environment reproducible and portable across any container platform
+- Healthcheck built in (`wget` probe on port 80)
+
+**Alternatives previously considered:**
 
 | Option | Status | Notes |
 |---|---|---|
-| Vercel | Candidate | Best DX, free tier, instant Git deploys |
-| Netlify | Candidate | Very similar to Vercel |
-| Cloudflare Pages | Candidate | Most generous free tier, fastest CDN |
-| GitHub Pages | Rejected (for now) | Org requires verified domain — blocked |
-| Azure Static Web Apps | Candidate | Good if Azure infrastructure is available |
+| Vercel | Superseded | Best DX, but Docker is more portable |
+| Netlify | Superseded | Similar to Vercel |
+| Cloudflare Pages | Superseded | Most generous free tier |
+| GitHub Pages | Rejected | Org requires verified domain — blocked |
+| Azure Static Web Apps | Superseded | Docker works on Azure Container Apps too |
 
-**Next step:** Confirm which platform is accessible and appropriate for assignment submission.
+---
+
+## ADR-011: Client-Side Routing — TanStack Router
+
+**Decision:** Use `@tanstack/react-router` for client-side routing.
+
+**Reasoning:**
+- Fully type-safe routes — path params, search params, and loader data are all typed end-to-end
+- File-based routing via the `@tanstack/router-plugin` Vite plugin — routes are defined as files under `src/routes/`, and the route tree is auto-generated to `src/routeTree.gen.ts`
+- First-class support for nested layouts (the `__root.tsx` file wraps all routes)
+- Designed for React 19 and modern bundlers
+
+**Current routes:**
+```
+src/routes/
+  __root.tsx           — shared layout (nav bar, theme context)
+  index.tsx            — /  (home)
+  about.tsx            — /about
+  contact.tsx          — /contact
+  loan-simulator.tsx   — /loan-simulator
+```
+
+**Alternatives considered:**
+- React Router v7 — long-standing standard, but type safety requires extra effort and the API is more verbose for nested layouts
+- Next.js App Router — overkill; this is a SPA with no server-side requirements
+
+---
+
+## ADR-012: Server State & Data Fetching — TanStack Query
+
+**Decision:** Use `@tanstack/react-query` for async data fetching and server state management.
+
+**Reasoning:**
+- Handles caching, background refetching, stale-while-revalidate, and loading/error states automatically
+- Removes the need for manual `useEffect` + `useState` data fetching patterns
+- Works alongside TanStack Router — both are from the same ecosystem, with first-class integration
+- Minimal boilerplate: define a query with a key and a fetch function, the rest is managed
+
+**Scope in this project:** Powers API calls in `src/api/index.ts`, used wherever remote data is needed (e.g. contact form submission, any future loan rate lookups).
+
+---
+
+## ADR-013: Form Handling — React Hook Form + Zod
+
+**Decision:** Use `react-hook-form` for form state management and `zod` for schema validation, connected via `@hookform/resolvers`.
+
+**Reasoning:**
+- `react-hook-form` uses uncontrolled inputs — minimal re-renders, good performance
+- `zod` defines the validation schema as a TypeScript type, so the form values are fully typed with no duplication
+- `@hookform/resolvers/zod` connects the two with a single adapter — one schema drives both validation messages and TypeScript types
+- Standard pairing across the React ecosystem; well-supported by shadcn/ui form components
+
+**Pattern:**
+```ts
+const schema = z.object({ email: z.string().email() })
+type FormValues = z.infer<typeof schema>
+const { register, handleSubmit } = useForm<FormValues>({ resolver: zodResolver(schema) })
+```
+
+---
+
+## ADR-014: Animation — Motion
+
+**Decision:** Use `motion` (formerly Framer Motion) for UI animations.
+
+**Reasoning:**
+- `motion` is the standalone package for Framer Motion v11+ — lighter than the old `framer-motion` package
+- Declarative `<motion.div>` API makes entrance, exit, and layout animations straightforward
+- Hardware-accelerated via the Web Animations API where supported
+- Used for page transitions and interactive element animations throughout the app
+
+---
+
+## ADR-015: Charts & Data Visualisation — TanStack Charts + D3 Scale
+
+**Decision:** Use `@tanstack/charts` for chart components and `d3-scale` for custom scale utilities.
+
+**Reasoning:**
+- `@tanstack/charts` provides React chart primitives that integrate well with the TanStack ecosystem
+- `d3-scale` provides low-level scale functions (linear, ordinal, etc.) for any custom chart logic not covered by the component library
+- Keeps the visualisation layer consistent with the rest of the TanStack stack
+
+**Used on:** the loan simulator results page (income allocation chart, repayment breakdown).
+
+---
+
+## ADR-016: PDF Export — jsPDF
+
+**Decision:** Use `jspdf` for client-side PDF generation.
+
+**Reasoning:**
+- Generates PDFs entirely in the browser — no server required
+- Allows users to download their loan simulation results as a formatted PDF
+- Lightweight for its scope; no heavy server-side rendering pipeline needed
+
+---
+
+## ADR-017: Icon Library — Lucide React
+
+**Decision:** Use `lucide-react` for icons.
+
+**Reasoning:**
+- Pairs naturally with shadcn/ui (the shadcn docs use Lucide as the default icon set)
+- Tree-shakeable — only the icons you import are included in the bundle
+- Consistent stroke-based design system
+
+---
+
+## ADR-018: Typography — Geist Variable Font
+
+**Decision:** Use the Geist variable font (`@fontsource-variable/geist`) as the primary typeface.
+
+**Reasoning:**
+- Geist is Vercel's open-source typeface — clean, legible, and modern
+- Loaded via `@fontsource-variable` — self-hosted, no external font request, no layout shift
+- Variable font format means one file covers all weights
 
 ---
 
@@ -306,6 +498,15 @@ npx shadcn@latest add button    # add components individually as needed
 | 004 | Package manager | pnpm |
 | 005 | Language | TypeScript |
 | 006 | Linter & formatter | Biome |
-| 007 | Component library | shadcn/ui |
-| 008 | Styling | Tailwind CSS |
-| 009 | Deployment | TBD |
+| 007 | Component library | shadcn/ui + Base UI |
+| 008 | Styling | Tailwind CSS v4 |
+| 009 | Testing | Vitest (unit) + Cypress (E2E) |
+| 010 | Deployment | Docker + Nginx |
+| 011 | Routing | TanStack Router |
+| 012 | Data fetching | TanStack Query |
+| 013 | Forms & validation | React Hook Form + Zod |
+| 014 | Animation | Motion (Framer Motion v11+) |
+| 015 | Charts | TanStack Charts + D3 Scale |
+| 016 | PDF export | jsPDF |
+| 017 | Icons | Lucide React |
+| 018 | Typography | Geist Variable Font |

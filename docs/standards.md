@@ -124,8 +124,8 @@ interface LoanFormProps {
 
 ## Code Quality
 
-- Run `npm run lint` before committing (`biome check .`). All lint errors must be resolved — do not suppress rules without a comment explaining why.
-- Run `npm run build` to confirm the TypeScript compiler passes with zero errors before opening a PR.
+- Run `pnpm lint` before committing (`biome check .`). All lint errors must be resolved — do not suppress rules without a comment explaining why.
+- Run `pnpm build` to confirm the TypeScript compiler passes with zero errors before opening a PR.
 - Write pure, side-effect-free utility functions where possible so they are easy to test.
 
 ---

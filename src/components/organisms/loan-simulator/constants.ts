@@ -51,4 +51,14 @@ export const COLOUR_PALETTE = {
   balanceFade: "#3987e520",
 } as const;
 
+export const REPAYMENT_TERM_OPTIONS = [
+  { value: "12", label: "12 months (1 year)" },
+  { value: "24", label: "24 months (2 years)" },
+  { value: "36", label: "36 months (3 years)" },
+  { value: "48", label: "48 months (4 years)" },
+  { value: "60", label: "60 months (5 years)" },
+  { value: "72", label: "72 months (6 years)" },
+  { value: "84", label: "84 months (7 years)" },
+];
+
 export const SIMULATOR_MODE_VALUES = ["basic", "advanced"] as SimulatorMode[];

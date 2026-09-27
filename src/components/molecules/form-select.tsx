@@ -27,11 +27,10 @@ export const FormSelect = ({
       <FieldLabel htmlFor={triggerId}>{label}</FieldLabel>
       <Select {...selectProps}>
         <SelectTrigger id={triggerId} className="w-full" aria-invalid={!!error}>
-          <SelectValue
-            placeholder={placeholder ?? `Select ${label.toLowerCase()}`}
-          >
-            {(value) =>
-              options.find((o) => o.value === value)?.label ?? null
+          <SelectValue>
+            {(value: string) =>
+              options.find((o) => o.value === value)?.label ??
+              (placeholder ?? `Select ${label.toLowerCase()}`)
             }
           </SelectValue>
         </SelectTrigger>

@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toNum } from "@/utils";
-
 import { Button } from "@/components/atoms";
 import { ExpenseBreakdownDialog } from "@/components";
 import { FormField, FormSelectField } from "@/components/molecules";
@@ -23,13 +22,13 @@ import {
   SANITATION_OPTIONS,
   ELECTRICITY_OPTIONS,
   SIMULATOR_MODE_VALUES,
+  REPAYMENT_TERM_OPTIONS,
   PAYMENT_HISTORY_OPTIONS,
 } from "./constants";
 import {
   calculateBasicResults,
   calculateAdvancedResults,
 } from "./loan-calculator";
-import { useTermsQuery } from "./terms.query";
 import { advancedLoanCalculatorSchema } from "./schema";
 
 const CollapsibleSection = ({
@@ -61,7 +60,6 @@ export const LoanSimulatorForm = ({ onResults }: LoanSimulatorFormProps) => {
   const [mode, setMode] = useState<SimulatorMode>("basic");
   const [breakdownOpen, setBreakdownOpen] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>("household");
-  const { data: terms = [], isLoading: termsLoading } = useTermsQuery();
   const {
     register,
     control,
@@ -82,11 +80,6 @@ export const LoanSimulatorForm = ({ onResults }: LoanSimulatorFormProps) => {
       paymentHistory: "ontime",
     },
   });
-
-  const termOptions = terms.map((term) => ({
-    value: String(term.value),
-    label: term.label,
-  }));
 
   const onSubmit = (data: AdvancedLoanCalculator) => {
     const results =
@@ -154,7 +147,7 @@ export const LoanSimulatorForm = ({ onResults }: LoanSimulatorFormProps) => {
           placeholder="e.g. 3 000"
           {...register("debtMonthlyPayment", { setValueAs: toNum })}
         />
-        <div className="relative">
+        <div className="relative flex flex-col">
           <FormField
             label={
               mode === "advanced"
@@ -173,9 +166,9 @@ export const LoanSimulatorForm = ({ onResults }: LoanSimulatorFormProps) => {
             {...register("monthlyExpenses", { setValueAs: toNum })}
           />
           <Button
-            variant="ghost"
+            variant="secondary"
             onClick={onClickBreakdown}
-            className="absolute right-0 top-0 text-xs font-medium text-capitec-blue underline-offset-2 hover:underline dark:text-blue-300"
+            className="text-xs font-medium text-capitec-blue underline-offset-2 hover:underline dark:text-blue-300"
           >
             Break it down →
           </Button>
@@ -194,8 +187,7 @@ export const LoanSimulatorForm = ({ onResults }: LoanSimulatorFormProps) => {
           name="repaymentTerms"
           label="Repayment Term"
           description="Duration of the loan in months"
-          options={termOptions}
-          disabled={termsLoading}
+          options={REPAYMENT_TERM_OPTIONS}
         />
       </div>
 
