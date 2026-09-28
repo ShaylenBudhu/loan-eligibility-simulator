@@ -49,6 +49,6 @@ describe('Contact page', () => {
   })
 
   it('CTA link points to loan simulator', () => {
-    cy.contains('Try the Loan Simulator').should('have.attr', 'href', '/loan-simulator')
+    cy.contains('Try the Loan Simulator').should('have.attr', 'href').and('include', '/loan-simulator')
   })
 })

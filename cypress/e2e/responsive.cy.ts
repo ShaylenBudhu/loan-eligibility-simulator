@@ -32,8 +32,9 @@ describe('Responsive navbar', () => {
     it('opens mobile menu on burger click', () => {
       cy.get('button[aria-label="Toggle menu"]').click()
       cy.get('[aria-expanded="true"]').should('exist')
-      cy.get('a[href="/"]:visible').should('be.visible')
-      cy.get('a[href="/about"]:visible').should('be.visible')
+      // Target mobile-only links (rounded-xl) not the hidden desktop nav (rounded-full)
+      cy.contains('a.rounded-xl', 'Home').should('be.visible')
+      cy.contains('a.rounded-xl', 'About Us').should('be.visible')
     })
 
     it('closes mobile menu on second burger click', () => {
@@ -44,7 +45,7 @@ describe('Responsive navbar', () => {
 
     it('closes mobile menu when a link is clicked', () => {
       cy.get('button[aria-label="Toggle menu"]').click()
-      cy.get('a[href="/about"]:visible').click()
+      cy.contains('a.rounded-xl', 'About Us').click()
       cy.url().should('include', '/about')
       cy.get('[aria-expanded="false"]').should('exist')
     })
