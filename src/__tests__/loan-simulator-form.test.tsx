@@ -110,7 +110,7 @@ describe("LoanSimulatorForm", () => {
     await user.type(screen.getByLabelText(/monthly living expenses/i), "8000");
     await user.type(screen.getByLabelText(/requested loan amount/i), "50000");
     await user.click(document.getElementById("repayment-term")!);
-    await user.click(await screen.findByText("36 months"));
+    await user.click(await screen.findByText("36 months (3 years)"));
     await user.click(
       screen.getByRole("button", { name: /check eligibility/i }),
     );
@@ -141,7 +141,7 @@ describe("LoanSimulatorForm", () => {
     await user.type(screen.getByLabelText(/monthly living expenses/i), "8000");
     await user.type(screen.getByLabelText(/requested loan amount/i), "50000");
     await user.click(document.getElementById("repayment-term")!);
-    await user.click(await screen.findByText("36 months"));
+    await user.click(await screen.findByText("36 months (3 years)"));
     await user.click(
       screen.getByRole("button", { name: /check eligibility/i }),
     );
@@ -166,7 +166,7 @@ describe("LoanSimulatorForm", () => {
     await user.type(screen.getByLabelText(/other monthly expenses/i), "5000");
     await user.type(screen.getByLabelText(/requested loan amount/i), "50000");
     await user.click(document.getElementById("repayment-term")!);
-    await user.click(await screen.findByText("36 months"));
+    await user.click(await screen.findByText("36 months (3 years)"));
     await user.type(screen.getByLabelText(/rent \/ bond payment/i), "6000");
     await user.click(
       screen.getByRole("button", { name: /check eligibility/i }),

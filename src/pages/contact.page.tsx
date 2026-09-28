@@ -4,6 +4,7 @@ import { PageTheme } from "@/components/templates";
 import { ContactForm } from "@/components/organisms";
 
 import { CONTACT_DETAILS } from "./constants";
+import { Link } from "@tanstack/react-router";
 
 export const ContactPage: FC = () => (
   <PageTheme>
@@ -69,12 +70,12 @@ export const ContactPage: FC = () => (
             Get an instant result — no credit check required.
           </p>
         </div>
-        <a
-          href="/loan-simulator"
+        <Link
+          to="/loan-simulator"
           className="shrink-0 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-capitec-blue transition hover:bg-white/90"
         >
           Try the Loan Simulator →
-        </a>
+        </Link>
       </div>
     </section>
   </PageTheme>

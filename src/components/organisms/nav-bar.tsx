@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 import {
+  Button,
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
@@ -14,7 +15,6 @@ import capitecLogo from "@/assets/images/capitec-logo.svg";
 import capitecFullLogo from "@/assets/images/capitecfull.svg";
 
 import { LINKS } from "./constants";
-import { GRID_STYLE } from "./helpers";
 
 export const NavBar = () => {
   const [open, setOpen] = useState(false);
@@ -58,24 +58,22 @@ export const NavBar = () => {
 
         <div className="relative z-10 flex flex-1 items-center justify-end gap-2">
           <ThemeToggle />
-          <button
-            type="button"
+          <Button
+            variant="ghost"
             aria-label="Toggle menu"
             aria-expanded={open}
+            data-state={open ? "open" : "closed"}
             onClick={() => setOpen((v) => !v)}
-            className="flex lg:hidden items-center justify-center rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+            className="flex lg:hidden items-center justify-center rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 aria-expanded:bg-transparent aria-expanded:text-white/70"
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
+          </Button>
         </div>
       </nav>
 
       {open && (
         <div className="relative overflow-hidden bg-capitec-blue dark:bg-[#002e47] border-b border-white/10 lg:hidden">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.08]"
-            style={GRID_STYLE}
-          />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.08]" />
           <nav className="relative z-10 flex flex-col px-4 py-3 gap-1">
             {LINKS.map(({ to, label }) => (
               <Link
